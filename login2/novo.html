@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bora Tomar Uma? - Login</title>
+    <!-- Carrega Tailwind CSS para estilização moderna e responsiva -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Ícones Font Awesome para o olho de senha e o avatar -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" type="image/png" href="../img/bebida-gelada.gif">
+    <style>
+        /* Define a fonte Inter como padrão */
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; 
+        }
+        
+      /* Estilo da Imagem de Fundo Kivy (FloatLayout Image) */
+.background-kivy {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../img/login.jpeg'); /* Imagem temática Kivy */
+    
+    /* ALTERAÇÃO CHAVE: Usar 'cover' para zoom e preenchimento total */
+    background-size: cover; 
+    
+    background-position: center;
+    background-repeat: no-repeat;
+    
+    /* A cor de fundo só será vista se a imagem falhar ao carregar */
+    background-color: #1f2937; 
+    
+    z-index: -1;
+}
+
+        /* Estilos para as telas */
+        .screen {
+            display: none;
+        }
+        .screen.active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; /* Centraliza verticalmente */
+            height: 100%;
+        }
+        
+        /* Estilo customizado para o botão de olho */
+        .toggle-password {
+            cursor: pointer;
+            position: absolute;
+            right: 0.5rem; 
+            top: 50%;
+            transform: translateY(-50%);
+            color: #4a5568; 
+            padding: 0.5rem; 
+        }
+    </style>
+    <script>
+        // Cores Kivy traduzidas: (0.894, 0.561, 0.310, 1) -> #E48F4F
+        // Cor do texto escuro Kivy: (0.145, 0.145, 0.145, 1) -> #252525
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'kivy-primary': '#E48F4F', /* Laranja/Bronze (Botão Entrar, Título) */
+                        'kivy-dark': '#252525',    /* Cinza Escuro (Botão Cadastrar/Esqueci Senha) */
+                    },
+                    boxShadow: {
+                        'inner-lg': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen flex items-start justify-center pt-10 pb-10">
+
+    <!-- IMAGEM DE FUNDO (Nova imagem temática) -->
+    <div class="background-kivy"></div>
+
+    <!-- Container da Tela (Simulando Window.size = (360, 640)) -->
+    <div class="w-[360px] h-[640px] relative"> 
+        
+        <!-- 1. TELA DE LOGIN (Design Refinado com Avatar) -->
+        <div id="login" class="screen active absolute top-0 left-0 w-full h-full p-6">
+            
+            <!-- CONTEÚDO CENTRAL (Centralizado verticalmente) -->
+            <!-- Opacidade do card alterada de bg-opacity-70 para bg-opacity-80 para maior clareza -->
+            <div class="w-11/12 p-8 rounded-2xl bg-gray-900 bg-opacity-80 shadow-2xl"> 
+                
+                <!-- Placeholder de Imagem de Perfil -->
+                <div class="flex justify-center pt-2 mb-4">
+                    <div class="w-24 h-24 rounded-full bg-kivy-primary flex items-center justify-center text-kivy-dark border-4 border-white shadow-lg">
+                        <!-- Ícone de usuário (simulando um avatar) -->
+                        <i class="fas fa-user text-5xl"></i> 
+                    </div>
+                </div>
+
+                <h2 class="text-3xl font-extrabold text-kivy-primary text-center mb-6"> 
+                    Acesso
+                </h2>
+                
+                <form id="login-form" class="space-y-5 mb-6">
+                    
+                    <!-- Campo de usuário -->
+                    <div class="relative">
+                        <input type="text" id="login-usuario" placeholder="Usuário" 
+                               class="w-full px-4 py-3 border-2 border-gray-600 rounded-lg text-black placeholder-gray-500 focus:outline-none focus:border-kivy-primary transition duration-150 shadow-inner-lg" 
+                               required>
+                    </div>
+
+                    <!-- Campo de senha com ícone de olho -->
+                    <div class="relative flex items-center bg-white rounded-lg border-2 border-gray-600 focus-within:border-kivy-primary transition duration-150">
+                        <input type="password" id="login-senha" placeholder="Senha" 
+                               class="flex-grow w-full px-4 py-3 rounded-lg text-black placeholder-gray-500 bg-transparent focus:outline-none pr-12" 
+                               required>
+                        <!-- Botão Olho -->
+                        <i class="fas fa-eye toggle-password text-xl text-gray-500 hover:text-kivy-primary" data-target="login-senha" aria-label="Mostrar Senha"></i>
+                    </div>
+
+                    <!-- Botão ENTRAR (Primary) -->
+                    <button type="submit" 
+                            class="w-full h-[48px] bg-kivy-primary text-kivy-dark py-2 rounded-lg font-bold text-lg hover:bg-opacity-90 transition duration-200 shadow-md transform hover:scale-[1.01]">
+                        Entrar
+                    </button>
+                </form>
+
+                <!-- Links Secundários (Usuário Livre / Refinado) -->
+                <div class="flex flex-col space-y-2 text-center pt-2">
+                    <button type="button" onclick="navigateTo('cadastro')"
+                            class="text-sm text-kivy-primary hover:text-white transition duration-200 font-medium">
+                        Novo por aqui? Cadastre-se
+                    </button>
+                    <button type="button" onclick="navigateTo('recuperar-senha')"
+                            class="text-sm text-gray-400 hover:text-white transition duration-200">
+                        Esqueci minha senha
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 2. TELA DE CADASTRO (Design Refinado com Avatar) -->
+        <div id="cadastro" class="screen absolute top-0 left-0 w-full h-full p-6">
+            
+            <!-- CONTEÚDO CENTRAL (Centralizado verticalmente) -->
+            <!-- Opacidade do card alterada de bg-opacity-70 para bg-opacity-80 para maior clareza -->
+            <div class="w-11/12 p-8 rounded-2xl bg-gray-900 bg-opacity-80 shadow-2xl">
+                
+                 <!-- Placeholder de Imagem de Perfil -->
+                <div class="flex justify-center pt-2 mb-4">
+                    <div class="w-24 h-24 rounded-full bg-kivy-primary flex items-center justify-center text-kivy-dark border-4 border-white shadow-lg">
+                        <!-- Ícone de usuário (simulando um avatar) -->
+                        <i class="fas fa-user text-5xl"></i> 
+                    </div>
+                </div>
+
+                <h2 class="text-3xl font-extrabold text-kivy-primary text-center mb-6">
+                    Cadastro
+                </h2>
+
+                <form id="register-form" class="space-y-4">
+                    
+                    <!-- Campo de Usuário -->
+                    <div class="relative">
+                        <input type="text" id="register-usuario" placeholder="Usuário" 
+                               class="w-full px-4 py-3 border-2 border-gray-600 rounded-lg text-black placeholder-gray-500 focus:outline-none focus:border-kivy-primary transition duration-150 shadow-inner-lg" 
+                               required>
+                    </div>
+
+                    <!-- Campo de E-mail -->
+                    <div class="relative">
+                        <input type="email" id="register-email" placeholder="E-mail" 
+                               class="w-full px-4 py-3 border-2 border-gray-600 rounded-lg text-black placeholder-gray-500 focus:outline-none focus:border-kivy-primary transition duration-150 shadow-inner-lg" 
+                               required>
+                    </div>
+
+                    <!-- Campo de Senha -->
+                    <div class="relative flex items-center bg-white rounded-lg border-2 border-gray-600 focus-within:border-kivy-primary transition duration-150">
+                        <input type="password" id="register-senha" placeholder="Senha" 
+                               class="flex-grow w-full px-4 py-3 rounded-lg text-black placeholder-gray-500 bg-transparent focus:outline-none pr-12" 
+                               required>
+                        <!-- Botão Olho -->
+                        <i class="fas fa-eye toggle-password text-xl text-gray-500 hover:text-kivy-primary" data-target="register-senha" aria-label="Mostrar Senha"></i>
+                    </div>
+
+                    <!-- Campo Confirmar Senha -->
+                    <div class="relative flex items-center bg-white rounded-lg border-2 border-gray-600 focus-within:border-kivy-primary transition duration-150">
+                        <input type="password" id="register-confirmar-senha" placeholder="Confirmar senha" 
+                               class="flex-grow w-full px-4 py-3 rounded-lg text-black placeholder-gray-500 bg-transparent focus:outline-none pr-12" 
+                               required>
+                        <!-- Botão Olho -->
+                        <i class="fas fa-eye toggle-password text-xl text-gray-500 hover:text-kivy-primary" data-target="register-confirmar-senha" aria-label="Mostrar Senha"></i>
+                    </div>
+                    
+                    <!-- Botão CADASTRAR (Primary) -->
+                    <button type="submit" 
+                            class="w-full h-[48px] bg-kivy-primary text-kivy-dark py-2 rounded-lg font-bold text-lg hover:bg-opacity-90 transition duration-200 shadow-md mt-6 transform hover:scale-[1.01]">
+                        Cadastrar
+                    </button>
+                    
+                    <!-- Botão VOLTAR (Secondary) -->
+                    <button type="button" onclick="navigateTo('login')"
+                            class="w-full h-[48px] bg-kivy-dark text-kivy-primary py-2 rounded-lg font-bold text-lg hover:bg-opacity-90 transition duration-200 shadow-md">
+                        Voltar
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 3. TELA DE RECUPERAR SENHA (Design Refinado) -->
+        <div id="recuperar-senha" class="screen absolute top-0 left-0 w-full h-full p-6">
+            
+            <!-- CONTEÚDO CENTRAL (Centralizado verticalmente) -->
+            <!-- Opacidade do card alterada de bg-opacity-70 para bg-opacity-80 para maior clareza -->
+            <div class="w-11/12 p-8 space-y-6 rounded-2xl bg-gray-900 bg-opacity-80 shadow-2xl">
+
+                <h2 class="text-3xl font-extrabold text-kivy-primary text-center mb-6">
+                    Recuperar Senha
+                </h2>
+                
+                <form id="recovery-form" class="space-y-5">
+                    
+                    <!-- Campo de E-mail (Simulando TextInput) -->
+                    <div class="relative">
+                        <input type="email" id="recovery-email" placeholder="Digite seu e-mail" 
+                               class="w-full px-4 py-3 border-2 border-gray-600 rounded-lg text-black placeholder-gray-500 focus:outline-none focus:border-kivy-primary transition duration-150 shadow-inner-lg" 
+                               required>
+                    </div>
+
+                    <!-- Botão RECUPERAR (Primary) -->
+                    <button type="submit" 
+                            class="w-full h-[48px] bg-kivy-primary text-kivy-dark py-2 rounded-lg font-bold text-lg hover:bg-opacity-90 transition duration-200 shadow-md transform hover:scale-[1.01]">
+                        Recuperar
+                    </button>
+                    
+                    <!-- Botão VOLTAR (Secondary) -->
+                    <button type="button" onclick="navigateTo('login')"
+                            class="w-full h-[48px] bg-kivy-dark text-kivy-primary py-2 rounded-lg font-bold text-lg hover:bg-opacity-90 transition duration-200 shadow-md">
+                        Voltar
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- NOTIFICAÇÃO TOAST/SPAM GLOBAL (Novo componente fixo na tela) -->
+    <!-- bottom-[-100px] para esconder inicialmente e z-50 para ficar acima de tudo -->
+    <div id="global-toast" 
+         style="bottom: -100px;" 
+         class="fixed left-1/2 transform -translate-x-1/2 p-3 px-6 rounded-lg shadow-xl text-white transition-all duration-300 z-50 min-w-[200px] text-center">
+        <!-- Conteúdo do Toast -->
+    </div>
+
+    <script>
+        // Lógica de navegação e autenticação (simulando o ScreenManager e a lógica Python)
+        
+        const globalToast = document.getElementById('global-toast');
+
+
+        /**
+         * Simula a mudança de tela do Kivy ScreenManager
+         * @param {string} targetScreenId O ID da tela para onde navegar ('login', 'cadastro', 'recuperar-senha')
+         */
+        window.navigateTo = function(targetScreenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            const targetScreen = document.getElementById(targetScreenId);
+            if (targetScreen) {
+                targetScreen.classList.add('active');
+            }
+        };
+
+        /**
+         * Exibe a notificação de Toast/Snackbar. Simula uma "notificação de spam" (toast).
+         * @param {string} message A mensagem a ser exibida.
+         * @param {string} type 'success' (verde) ou 'error' (vermelho).
+         */
+        let toastTimeout;
+        function showMessage(message, type) {
+            
+            // Limpa qualquer timeout anterior para resetar a animação
+            clearTimeout(toastTimeout);
+            
+            // 1. Configura a cor de fundo e o ícone
+            const bgColor = type === 'success' ? 'bg-green-600' : 'bg-red-600';
+            const iconClass = type === 'success' ? 'fa-check-circle' : 'fa-times-circle';
+
+            // 2. Define o conteúdo e o estilo (reseta classes e define a cor)
+            globalToast.className = `fixed left-1/2 transform -translate-x-1/2 p-3 px-6 rounded-lg shadow-xl text-white transition-all duration-300 z-50 min-w-[200px] text-center ${bgColor}`;
+            globalToast.innerHTML = `<i class="fas ${iconClass} mr-2"></i><span>${message}</span>`;
+            
+            // 3. Mostra o Toast (desliza para cima)
+            // Usa setTimeout com pequeno delay para garantir que o reset da classe/posição seja aplicado antes de mudar a posição
+            setTimeout(() => {
+                globalToast.style.bottom = '20px'; // Posição final na tela
+            }, 10); 
+            
+            // 4. Esconde o Toast após 2 segundos (desliza para baixo)
+            toastTimeout = setTimeout(() => {
+                globalToast.style.bottom = '-100px'; // Posição fora da tela
+            }, 2000); 
+        }
+
+        // LÓGICA DE LOGIN (Simulação)
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const usuarioInput = document.getElementById('login-usuario');
+            const senhaInput = document.getElementById('login-senha');
+
+            const usuario = usuarioInput.value.trim();
+            const senha = senhaInput.value.trim();
+            
+            // Lógica de verificação
+            if (usuario === "admin" && senha === "1234") {
+                // USANDO NOVO TOAST
+                showMessage("Login realizado com sucesso!", 'success');
+                // Limpar campos
+                usuarioInput.value = '';
+                senhaInput.value = '';
+                // Redirecionamento real
+            } else {
+                // USANDO NOVO TOAST
+                showMessage("Usuário ou senha incorretos.", 'error');
+            }
+        });
+
+        // LÓGICA DE RECUPERAÇÃO DE SENHA (Simulação)
+        document.getElementById('recovery-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const emailInput = document.getElementById('recovery-email');
+            const email = emailInput.value.trim();
+
+            if (email) {
+                 // USANDO NOVO TOAST
+                 showMessage("Link de recuperação enviado para " + email, 'success');
+                 emailInput.value = ''; 
+            } else {
+                 // USANDO NOVO TOAST
+                 showMessage("Por favor, digite um e-mail válido.", 'error');
+            }
+        });
+        
+        // LÓGICA DE CADASTRO (Simulação)
+        document.getElementById('register-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const user = document.getElementById('register-usuario').value.trim();
+            const email = document.getElementById('register-email').value.trim();
+            const senha = document.getElementById('register-senha').value.trim();
+            const confirmarSenha = document.getElementById('register-confirmar-senha').value.trim();
+
+            if (senha !== confirmarSenha) {
+                // USANDO NOVO TOAST
+                showMessage("Erro: As senhas não coincidem!", 'error');
+                return;
+            }
+
+            if (user && email && senha) {
+                // USANDO NOVO TOAST
+                showMessage("Cadastro realizado com sucesso!", 'success');
+                
+                // Limpar campos
+                document.getElementById('register-usuario').value = '';
+                document.getElementById('register-email').value = '';
+                document.getElementById('register-senha').value = '';
+                document.getElementById('register-confirmar-senha').value = '';
+            } else {
+                // USANDO NOVO TOAST
+                showMessage("Por favor, preencha todos os campos.", 'error');
+            }
+        });
+
+
+        // LÓGICA DE MOSTRAR SENHA (Aplicada a todas as telas)
+        document.querySelectorAll('.toggle-password').forEach(icon => {
+            icon.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-target');
+                const campo = document.getElementById(targetId);
+                
+                if (campo.type === 'password') {
+                    campo.type = 'text';
+                    this.classList.replace('fa-eye', 'fa-eye-slash');
+                } else {
+                    campo.type = 'password';
+                    this.classList.replace('fa-eye-slash', 'fa-eye');
+                }
+            });
+        });
+
+        // Garante que o usuário comece na tela de login
+        window.onload = () => {
+             navigateTo('login');
+        };
+        
+    </script>
+</body>
+</html>
