@@ -22,7 +22,7 @@ const originalCatalogData = {
     fermentadas: {
         title: "Fermentadas: Cervejas, Vinhos e Mais",
         products: [
-            { name: "Cerveja Itaipava 600ml", price: 7.50, img: "/img/itaipava.jpg" },
+            { name: "Cerveja Itaipava 600ml", price: 7.50, img: "./img/itaipava.jpg" },
             { name: "Vinho Tinto Malbec", price: 59.90, img: "/img/vinho.webp" },
             { name: "Sidra Cereser", price: 15.00, img: "/img/cereser.jpg" },
             { name: "Cerveja Artesanal Baden", price: 22.00, img: "/img/baden.png" },
@@ -319,3 +319,4 @@ document.addEventListener("DOMContentLoaded", () => {
     updateCartCount();
 
 });
+
